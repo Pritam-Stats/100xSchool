@@ -1,10 +1,15 @@
 function countWords(str){
-    arr = str.split(" ")
-    countArr = {}
+    let arr = str.split(" ")
+    let countObj = {}
     for (let x of arr){
-        
+        if (!(x in countObj)){
+            countObj[x] = 1;
+        }
+        else {
+            countObj[x] += 1;
+        }
     }
-    return countArr
+    return countObj;
 }
 
-console.log(countWords("one two two three four"));
+console.log(countWords("one two two three four one one four five"));
