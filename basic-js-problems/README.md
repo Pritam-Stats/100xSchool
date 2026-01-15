@@ -194,7 +194,7 @@ Here’s a comprehensive list with test cases for all 45 questions:
       20
       ```
 
-40. **Generate Unique Random Numbers**
+40. **Generate Unique Random Numbers** [Solution](./40-gen-RandomNos.js)
     - **Input**: `generateUniqueRandomNumbers(100, 5)`
     - **Output**: `[23, 45, 12, 67, 89]`
 
