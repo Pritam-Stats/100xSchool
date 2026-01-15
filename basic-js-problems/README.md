@@ -104,7 +104,7 @@ Here’s a comprehensive list with test cases for all 45 questions:
     - **Input**: `findLargest3Numbers([1, 7, 3, 9, 5])`
     - **Output**: `[9, 7, 5]`
 
-24. **Find the Area of a Circle Given Its Radius**
+24. **Find the Area of a Circle Given Its Radius** [Solution](./4-circle-area.js)
     - **Input**: `findAreaOfCircle(5)`
     - **Output**: `78.54` (using π ≈ 3.14)
 
