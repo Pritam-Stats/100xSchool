@@ -212,19 +212,19 @@ Here’s a comprehensive list with test cases for all 45 questions:
       15
       ```
 
-42. **Count Characters in a String (No Spaces)**
+42. **Count Characters in a String (No Spaces)** [Solution](./42-count-Chars-in-str.js)
     - **Input**: `countCharacters("test string")`
     - **Output**: `{ t: 3, e: 1, s: 2, r: 1, i: 1, n: 1, g: 1 }`
 
-43. **Count Words in a String**
+43. **Count Words in a String** [Solution](./43-countWords.js)
     - **Input**: `countWords("one two three")`
     - **Output**: `{ one: 1, two: 1, three: 1 }`
 
-44. **Search for an Item in an Array**
+44. **Search for an Item in an Array** [Solution](./44-searchInArr.js)
     - **Input**: `searchFunction([{ name: 'John', age: 20 }, { name: 'Jane', age: 25 }, { name: 'Alice', age: 30 }])`
     - **Output**: `undefined` (since no person with the name 'Bob')
 
-45. **Generate Employee IDs**
+45. **Generate Employee IDs** [Solution](./45-generateEmpID.js)
     - **Input**: `generateEmployeeId()`
     - **Output**: `['E0001', 'E0002', ..., 'E0020']`
 
