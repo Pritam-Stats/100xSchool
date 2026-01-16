@@ -228,3 +228,7 @@ Here’s a comprehensive list with test cases for all 45 questions:
     - **Input**: `generateEmployeeId()`
     - **Output**: `['E0001', 'E0002', ..., 'E0020']`
 
+46. **A string is a *golden String* if it starts with 'A' or 'a' and has a length greater than 5.** [Solution](./46-goldenString.js)
+47. **Write a program to check if two number has same last digit** [Solution](./47-lastDigit.js)
+    - **Input**: `num1 = 32` `num2 = 34562`
+    - **Output**: `both has same last digit 2`
