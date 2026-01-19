@@ -5,7 +5,7 @@
 - Horizontal alignment is easy with flex with justify content but the catch was the vertical alignment.
 - So body will be treated as the parent div to start the flexbox.
 
-### Problem Statement: [Go here](HTML-CSS-Assignments-main/assignment-1/problems/0-horizontal-align)
+### Problem Statement: [Go here](../../problems/0-horizontal-align/)
 ---
 
 ![Solution-ss](./Solution-ss.png)
