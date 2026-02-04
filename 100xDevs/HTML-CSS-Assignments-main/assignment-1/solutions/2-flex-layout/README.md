@@ -6,8 +6,6 @@ Contents of both the grids should be vertically centered
 
 Also make sure its max 1200px and center of the screen
 
-### Expected
-![expected](./photo.png)
 
-### My Solution [Helloww](../../solutions/2-flex-layout/index.html)
+### My Solution
 ![SOl](./Solution.png)

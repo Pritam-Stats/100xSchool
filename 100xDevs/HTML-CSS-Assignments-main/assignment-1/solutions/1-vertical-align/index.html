@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vertical-align</title>
+    <style>
+        * {
+            box-sizing: border-box;
+
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        /*body centers the container then container centers the text with the same logic*/
+
+        .container {
+            width: 1200px;
+            height: 500px;
+            background-color: aqua;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello World</h1>
+    </div>
+   
+</body>
+</html>
