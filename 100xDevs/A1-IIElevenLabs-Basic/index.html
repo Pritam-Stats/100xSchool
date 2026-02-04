@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | ElevenLabs</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <header>
+                    <span class="header-logo">IIElevenLabs</span>
+                </header>
+        <div class="center-box">
+            
+            <div class="container">
+                
+                <main class="form-container">
+                    <h1>Create an account</h1>
+
+                    <div class="google-signup-main">
+                        <img src="google.png" alt="logo" class="google-icon">
+                        <span class="google-text">Sign up with Google</span>
+                    </div>
+
+                    <div class="divider">
+                        <hr class="solid">
+                    </div>
+                    
+                    <form action="">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+
+                            <label for="password">Password</label>
+                            <div class="password-box">
+                                <input type="password" id="password" name="password" required>
+                                <span id="togglePass">👁️</span>
+                            </div>
+
+                            <div class="password-rules" id="passwordRules">
+                                <p id="rule-len">x Minimum 8 letters</p>
+                                <p id="rule-number">x At least one number</p>
+                                <p id="rule-special">x At least one special character</p>
+
+                            </div>
+
+                            <button type="submit" class="btn-signup">Sign Up</button>
+                        </form>
+
+                        <p>Already registered?
+                            <a href="#">Sign in</a>
+                        </p>
+                    
+                </main>
+            </div>
+        </div> <!--center box-->
+
+
+        <footer>
+            <p>
+                By continuing, you agree to our <span class="tos"><a    href="#">Terms of Service</a></span> and <span><a  href="#">Privacy Policy</a></span>.
+            </p>
+        </footer>
+    </div> <!--page-->
+
+        
+
+
+    <script>
+        const toggle = document.getElementById("togglePass");
+        const password = document.getElementById("password");
+
+        toggle.addEventListener("click", () => {
+            const type = password.getAttribute("type");
+
+            if (type === "password") {
+                password.setAttribute("type", "text");
+                toggle.textContent = "🙈";
+            } else {
+                password.setAttribute("type", "password");
+                toggle.textContent = "👁️";
+            }
+        });
+
+
+        const passwordInput = document.getElementById("password");
+        const ruleBox = document.getElementById("passwordRules");
+
+        const ruleLen = document.getElementById("rule-len");
+        const ruleNum = document.getElementById("rule-number");
+        const ruleSp = document.getElementById("rule-special");
+
+
+        //show rules when input focused
+        passwordInput.addEventListener("focus", () => {
+            ruleBox.classList.add("show");
+        });
+
+        //hide rules when focus lost
+        passwordInput.addEventListener("blur", () => {
+            if (passwordInput.value === "") {
+                ruleBox.classList.remove("show");
+            }
+        });
+
+
+        //live validation
+        passwordInput.addEventListener("input", () => {
+            const value = passwordInput.value;
+
+            if (value.length >= 8){
+                ruleLen.textContent = "✔ Minimum 8 letters";
+                ruleLen.className = "valid";
+            } else {
+                ruleLen.textContent = "✖ Minimum 8 letters";
+                ruleLen.className = "invalid";
+            };
+
+            // Number rule
+            if (/\d/.test(value)) {
+                ruleNum.textContent = "✔ At least one number";
+                ruleNum.className = "valid";
+            } else {
+                ruleNum.textContent = "✖ At least one number";
+                ruleNum.className = "invalid";
+            }
+
+            // Special character rule
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+                ruleSp.textContent = "✔ At least one special character";
+                ruleSp.className = "valid";
+            } else {
+                ruleSp.textContent = "✖ At least one special character";
+                ruleSp.className = "invalid";
+            }
+        });
+
+
+    </script>
+    
+</body>
+    
+
+    
+</html>
