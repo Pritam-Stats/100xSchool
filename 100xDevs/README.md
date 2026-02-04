@@ -1,6 +1,6 @@
 ## Structure of this Repo
-tree
-.
+
+
 ├── A1-IIElevenLabs-Basic
 │   ├── Assignment-1.png
 │   ├── google.png
