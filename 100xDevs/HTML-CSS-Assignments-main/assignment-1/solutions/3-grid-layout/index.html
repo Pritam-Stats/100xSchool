@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Layout</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: beige;
+    display: grid;
+    place-items: center; 
+}
+
+.container {
+    min-width: 1200px;
+    min-height: 400px;
+    margin: 0 auto;
+    
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    /* align-items: center; */
+    
+    
+    /* background-color: rgb(238, 88, 42); */
+
+    column-gap: 5px;
+}
+
+.green {
+    /* height: 200px; */
+    background-color: greenyellow;
+    /* grid-column: 1 /span 2; */
+}
+
+.blue {
+    /* height: 200px; */
+    background-color: cornflowerblue;
+}
+
+.item {
+    text-align: center;
+    place-content: center;
+}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="green item">
+            LEFT
+        </div>
+
+        <div class="blue item">
+            RIGHT
+        </div>
+    </div>
+    
+</body>
+</html>
