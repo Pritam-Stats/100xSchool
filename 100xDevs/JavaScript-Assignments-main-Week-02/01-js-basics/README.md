@@ -4,6 +4,43 @@ For beginners looking to build a strong foundation in JavaScript, check out this
 
 Js array and object assignments: [Here](https://brindle-goal-102.notion.site/QUESTIONS-FOR-JS-WEEKEND-26d46b36b2e980a0b299fbf0d87840af) *[Need to know Object.keys , .values , .entries as well]*
 
+# JS Basic Notes
+## 1. How to sum on js? [Code](sum.js)
+- JS doesn't have any inbuilt sum function but one more general purpose function called `reduce`.
+    
+    ```jsx
+        
+    let arr = [1,2,3]
+    let total = arr.reduce((prevSum, currValue) => prevSum + currValue, 0)
+    console.log(total)
+    function sum(arr) {
+        return arr.reduce((prevSum, currValue) => prevSum+currValue, 0)
+    }
+
+    ```
+
+- reduce take a callback function and and initial value,
+- Here, the callback function is taking the initial value as `prevSum` also called `accumulator` or `acc` and `currValue` of the array and returns the sum.
+- If we don't give the initial value then the `acc` will take the first value of the array by default and currValue start from the second element. Doesn't matter while summing but will change a lot if we are subtracting.
+  
+- Core Understanding Test
+
+    If I write:
+
+    ```jsx
+    [1,2,3,4].reduce((acc, curr) => acc - curr, 10)
+    ```
+Can you manually compute the result step-by-step? And what will be the answer if we don't assign the initial value.
+```0, -8```
+
+
+## 2. Difference between `of` and `in` statement:
+- `of` is for any iterable object and traverse through that, and `in` is for only the keys of any object.
+    - Special Note: Everything is treated as an object in JS.
+    - Arrays is also an object with hidden keys which are the indexes
+  - If we do `for (i in arr) {print(i)}` this will give the indexes in string form.
+  - But `for (i of arr) {print(i)}` will give the actual values.
+---
 # Questions
 TOTAL - 40
 
@@ -23,7 +60,12 @@ TOTAL - 40
         { food: 60, travel: 20, bills: 100 }
         
         ```
-        
+    - Solution: Many ways given. [Code](01.js)
+      - Using simple `for key in obj` 
+      - forEach method of arrays by converting everything to array form using `Object.entries`
+      - `Object.fromEntries` method in single line code.
+      - and also learnt using reduce method, in of statement, map and object methods.
+
 2. **Count word occurrences in array**
     - Input:
         
@@ -38,6 +80,12 @@ TOTAL - 40
         { apple: 3, banana: 2, orange: 1 }
         
         ```
+    - Solution:
+      - Given 3 versions. [Code](02.js)
+        - 1.using simple for loop and updating the freq like a hashmap
+        - 2. modified the counts check without if else but a or operator.
+        - 3. using arr.reduce method, by assigning the acc with a dictionary. 
+    
         
 3. **Swap keys and values of object**
     - Input:
@@ -53,6 +101,7 @@ TOTAL - 40
         { x: "a", y: "b", z: "c" }
         
         ```
+    - Solution: Two versions 
         
 4. **Find the largest value key**
     - Input:
@@ -68,6 +117,9 @@ TOTAL - 40
         b
         
         ```
+    - Solution: [Code](04.js)
+      - 1. Using for loop in the keys and if else
+      - 2. Using reduce method.
         
 5. **Flatten object of arrays into one array**
     - Input:
@@ -83,6 +135,9 @@ TOTAL - 40
         ["apple", "banana", "carrot", "pea"]
         
         ```
+    - Solution: [Code](05.js)
+      - 1. Using reduce and concat method.
+      - 2. Using inbuilt flat method.
         
 6. **Group people by city**
     - Input:
