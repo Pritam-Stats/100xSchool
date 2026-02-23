@@ -6,7 +6,9 @@
 */
 
 function findLargestElement(numbers) {
-
+    if (numbers.length === 0) {return }
+    return numbers.reduce((a, b) => a > b ? a : b)
 }
+// console.log(findLargestElement([3, 7, 2, 9, 1]))
 
 module.exports = findLargestElement;
