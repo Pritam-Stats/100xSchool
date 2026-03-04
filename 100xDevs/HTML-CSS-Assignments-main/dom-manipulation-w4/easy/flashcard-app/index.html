@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Card App</title>
+    <link rel="stylesheet" href="syle.css">
+</head>
+<body>
+    <div class="form">
+        <label for="topics">Choose the Topic</label>
+        <select name="topics" id="topics" required>
+            <option value="" disabled selected hidden>Please select a topic</option>
+            <option value="CS Fundamental">CS Fundamental</option>
+            <option value="Front End">Front End</option>
+            <option value="Math">Math</option>
+            <option value="DSA">DSA</option>
+        </select>
+
+        <input placeholder="1-10" type="number" class="nques" required>Number of questions</input>
+    </div>
+    
+
+    <script src="app.js"></script>
+</body>
+</html>
