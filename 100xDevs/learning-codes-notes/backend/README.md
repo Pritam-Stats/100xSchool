@@ -21,13 +21,13 @@
 ## Create an HTTP Server - Express
 - Practice Code: [Calculator with Backend](/backend/calculator-http-server/)
 - Technically we could do this using DOM only using onclick and all.
-<img src="/backend/images/3-create-an-http-server.jpeg" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+<img src="images/3-create-an-http-server.jpeg" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
 ---
 
 ## Fetch API
 - This is how frontend talks to backend using the endpoints
 - There are 2 high level ways a browser can send requests to an HTTP server:
-<img src="/backend/images/ss-FetchAPI.webp" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+<img src="images/ss-FetchAPI.webp" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
 
 **1. From the browser URL (Default GET request):**
 - When you type a URL into the browser’s address bar and press Enter, the browser sends an HTTP GET request to the server. This request is used to retrieve resources like HTML pages, images, or other content.
