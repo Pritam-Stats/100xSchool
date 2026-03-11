@@ -7,19 +7,39 @@
 
 
     <script>
-        async function add(){
-            const a = document.getElementById('first').value;
-            const b = document.getElementById('second').value;
+        // async function add(){
+        //     const a = document.getElementById('first').value;
+        //     const b = document.getElementById('second').value;
 
-            //send a req to backend for the answer
-            // const res = await fetch("http://localhost:3000/sum/" + a + "/" + b);  //creates the full path params
-            const res = await fetch("http://localhost:3000/sum?a=" + a + "&b=" + b);  //creates the full url with query param
+        //     //send a req to backend for the answer
+        //     // const res = await fetch("http://localhost:3000/sum/" + a + "/" + b);  //creates the full path params
+        //     const res = await fetch("http://localhost:3000/sum?a=" + a + "&b=" + b);  //creates the full url with query param
 
-            // fetch actually returns a promise so how do we call a promise either by dot then or async await, so we made the parent fn a async function
-            //now the weird thing about fetch fn is fetch actually sends the get req to initiate but doesn't actually fetch the result, there is second step to fetch
-            const json = await res.json()   //this also returns a promise
+        //     // fetch actually returns a promise so how do we call a promise either by dot then or async await, so we made the parent fn a async function
+        //     //now the weird thing about fetch fn is fetch actually sends the get req to initiate but doesn't actually fetch the result, there is second step to fetch
+        //     const json = await res.json()   //this also returns a promise
 
-            document.getElementById("response").innerHTML = json.ans
+        //     document.getElementById("response").innerHTML = json.ans
+        // }
+        
+        async function add() {
+            const a = document.getElementById("first").value;
+            const b = document.getElementById("second").value;
+
+            const res = await fetch("http://localhost:3000/sum", {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(
+                    {
+                        a: a,
+                        b: b
+                    }
+                )
+            });
+            const json = await res.json()
+            document.getElementById("response").innerHTML = json.ans;
         }
 
         async function sub() {

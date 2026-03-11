@@ -18,19 +18,35 @@ const app = express(); //initializing app or the http server
 
 //let's create 4 endpoints
 //example req: localhost:3000/sum?a=1&b=2   - these are the query param
-app.get("/sum", function(req, res) {    //similar callbacks we did earlier like fs.readfile, any request will go into req, and response will be sent by res
-    const a = parseInt(req.query.a);
-    const b = parseInt(req.query.b);
+// app.get("/sum", function(req, res) {    //similar callbacks we did earlier like fs.readfile, any request will go into req, and response will be sent by res
+//     const a = parseInt(req.query.a);
+//     const b = parseInt(req.query.b);
+
+//     const sum = a + b;
+
+//     // to return in json form
+//     res.json({
+//         ans: sum
+//     })
+
+//     // //lets send a string
+//     // res.send(sum.toString());
+// })
+
+
+
+
+// post method
+app.use(express.json()) //imp for body reading
+app.post("/sum", function(req, res) {
+    const a = parseInt(req.body.a); //now this reads from the payload
+    const b = parseInt(req.body.b); //now this reads from the payload
 
     const sum = a + b;
 
-    // to return in json form
     res.json({
-        ans: sum
-    })
-
-    // //lets send a string
-    // res.send(sum.toString());
+        ans : sum
+    });
 })
 
 
@@ -56,9 +72,9 @@ app.get("/multiply/:a/:b", function (req, res) {
     const a = parseInt(req.params.a);
     const b = parseInt(req.params.b);
 
-    const sum = a * b;
+    const ans = a * b;
 
-    res.send(sum.toString());
+    res.send(ans.toString());
 })
 /*
 // we can do this
@@ -92,7 +108,7 @@ app.get("/divide", function(req, res) {
 
     const d = a / b;
 
-    res.send(d.toString());
+    res.send(d.toString())
 })
 
 
