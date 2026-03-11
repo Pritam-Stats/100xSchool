@@ -24,6 +24,15 @@
 <img src="images/3-create-an-http-server.jpeg" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
 ---
 
+#### The misconception
+- While building the calculator backend.
+- It is very much possible to create the calculator app using the DOM manipulation.
+- But that would make the app only a **client side** application, what that mean is, anyone can read the logic of the app how it’s get built, since the frontend will be rendered to the browser.
+- So when we are building the backend we are keeping the core logic of the app hidden.
+- But we need our frontend to talk to our backend, the frontend as a client and the backend as a server.
+- That is where Fetch api comes in
+---
+
 ## Fetch API
 - This is how frontend talks to backend using the endpoints
 - There are 2 high level ways a browser can send requests to an HTTP server:
@@ -58,7 +67,14 @@ Server to send the request to - https://jsonplaceholder.typicode.com/posts/1 (GE
 </body>
 
 </html>
+
 ```
+
+- till now we have built this, a functional backend of a calculator app
+<img src="images/image.png" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+
+--- 
+
 ##### Using axios (external library)
 
 ```html
