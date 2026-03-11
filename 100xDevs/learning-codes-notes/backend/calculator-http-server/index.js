@@ -24,13 +24,13 @@ app.get("/sum", function(req, res) {    //similar callbacks we did earlier like 
 
     const sum = a + b;
 
-    //to return in json form
-    // res.json({
-    //     ans: sum
-    // })
+    // to return in json form
+    res.json({
+        ans: sum
+    })
 
-    //lets send a string
-    res.send(sum.toString());
+    // //lets send a string
+    // res.send(sum.toString());
 })
 
 
@@ -42,7 +42,12 @@ app.get("/sum/:a/:b", function(req, res) {
 
     const sum = a+b;
 
-    res.send(sum.toString());
+    // res.send(sum.toString());
+    res.json(
+        {
+            ans: sum
+        }
+    )
 })
 
 //multiply
@@ -68,6 +73,27 @@ app.get("/", function(req, res){
     res.sendFile(path.join(__dirname, 'index.html'))
 })
 
+
+app.get("/sub", function(req, res) {
+    const a = parseInt(req.query.a)
+    const b = parseInt(req.query.b)
+
+    const sum = a - b;
+
+    res.json({
+        ans: sum
+    });
+}) 
+
+
+app.get("/divide", function(req, res) {
+    const a = parseInt(req.query.a)
+    const b = parseInt(req.query.b)
+
+    const d = a / b;
+
+    res.send(d.toString());
+})
 
 
 app.listen(3000)    //running on port 3000 got to localhost:3000

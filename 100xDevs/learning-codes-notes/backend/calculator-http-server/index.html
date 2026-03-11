@@ -4,15 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
+
+
+    <script>
+        async function add(){
+            const a = document.getElementById('first').value;
+            const b = document.getElementById('second').value;
+
+            //send a req to backend for the answer
+            // const res = await fetch("http://localhost:3000/sum/" + a + "/" + b);  //creates the full path params
+            const res = await fetch("http://localhost:3000/sum?a=" + a + "&b=" + b);  //creates the full url with query param
+
+            // fetch actually returns a promise so how do we call a promise either by dot then or async await, so we made the parent fn a async function
+            //now the weird thing about fetch fn is fetch actually sends the get req to initiate but doesn't actually fetch the result, there is second step to fetch
+            const json = await res.json()   //this also returns a promise
+
+            document.getElementById("response").innerHTML = json.ans
+        }
+
+        async function sub() {
+            const a = document.getElementById('first').value;
+            const b = document.getElementById('second').value;
+
+            const res = await fetch("http://localhost:3000/sub?a=" + a + "&b=" + b);
+            const json = await res.json()
+
+            document.getElementById("response").innerHTML = json.ans
+        }
+
+        async function multiply() {
+            const a = document.getElementById('first').value;
+            const b = document.getElementById('second').value;
+
+            const res = await fetch("http://localhost:3000/multiply/" + a + "/" + b);
+            const json = await res.text()
+
+            document.getElementById("response").innerHTML = json
+        }
+
+        async function divide() {
+            const a = document.getElementById('first').value;
+            const b = document.getElementById('second').value;
+
+            const res = await fetch("http://localhost:3000/divide?a=" + a + "&b=" + b);
+            const json = await res.text()
+
+            document.getElementById("response").innerHTML = json
+        }
+
+    </script>
 </head>
 <body>
-    <input type="number" placeholder="first number">
-    <input type="number" placeholder="second number">
+    <input id="first" type="number" placeholder="first number">
+    <input id="second" type="number" placeholder="second number">
 
-    <button>add</button>
-    <button>sub</button>
-    <button>multiply</button>
-    <button>Div</button>
+    <button onclick="add()">add</button>
+    <button onclick="sub()">sub</button>
+    <button onclick="multiply()">multiply</button>
+    <button onclick="divide()">Div</button>
 
     <div id="response"></div>
 </body>
