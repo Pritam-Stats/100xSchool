@@ -1,4 +1,30 @@
-# HTTP Server - Intro (Theory)
+- [1. HTTP Server - Intro Recap (Theory)](#1-http-server---intro-recap-theory)
+- [2. HTTP Deep Dive](#2-http-deep-dive)
+  - [2.1. Headers](#21-headers)
+      - [2.1.0.1. Request headers](#2101-request-headers)
+      - [2.1.0.2. Response headers](#2102-response-headers)
+  - [2.2. Create an HTTP Server - Express](#22-create-an-http-server---express)
+      - [2.2.0.1. The misconception](#2201-the-misconception)
+  - [2.3. Fetch API](#23-fetch-api)
+    - [2.3.1. Fetch request examples](#231-fetch-request-examples)
+      - [2.3.1.1. Fetch req sending using post method and the body or payload](#2311-fetch-req-sending-using-post-method-and-the-body-or-payload)
+    - [2.3.2. Recap and concept clearance for the topics done till now (Using GPT)](#232-recap-and-concept-clearance-for-the-topics-done-till-now-using-gpt)
+      - [2.3.2.1. 1️⃣ Sending Data via Path Parameters (GET)](#2321-1️⃣-sending-data-via-path-parameters-get)
+      - [2.3.2.2. 2️⃣ Sending Data via Query Parameters (GET)](#2322-2️⃣-sending-data-via-query-parameters-get)
+      - [2.3.2.3. 3️⃣ Sending Data via Body / Payload (POST)](#2323-3️⃣-sending-data-via-body--payload-post)
+      - [2.3.2.4. the differences in the browser what actually happens when using body (payload) and query params](#2324-the-differences-in-the-browser-what-actually-happens-when-using-body-payload-and-query-params)
+    - [2.3.3. 4️⃣ Why POST is Used for Payload](#233-4️⃣-why-post-is-used-for-payload)
+    - [2.3.4. 5️⃣ Example Without Axios (HTML Form)](#234-5️⃣-example-without-axios-html-form)
+    - [2.3.5. Using axios (external library)](#235-using-axios-external-library)
+  - [2.4. Middlewares](#24-middlewares)
+    - [2.4.1. Route specific middlewares](#241-route-specific-middlewares)
+      - [2.4.1.1. Simple Assignment questions on Middlewares](#2411-simple-assignment-questions-on-middlewares)
+    - [2.4.2. Commonly used middlewares](#242-commonly-used-middlewares)
+  - [2.5. cors - Cross origin resource sharing](#25-cors---cross-origin-resource-sharing)
+
+
+# 1. HTTP Server - Intro Recap (Theory)
+[Read the HTTP Server Intro Notes](Intro-to-HTTP.md)
 - what's http protocol
 - request
 - response body
@@ -17,25 +43,53 @@
   - browsers
   - postman/requestly
 
-# HTTP Deep Dive
-## Create an HTTP Server - Express
-- Practice Code: [Calculator with Backend](/backend/calculator-http-server/)
-- Technically we could do this using DOM only using onclick and all.
-<img src="images/3-create-an-http-server.jpeg" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
 ---
 
-#### The misconception
+# 2. HTTP Deep Dive
+
+## 2.1. Headers
+
+HTTP headers are key-value pairs sent between a client (like a web browser) and a `server` in an **HTTP request or response**. They convey *metadata* about the request or response, such as content type, auth information etc.
+
+- **Common headers**
+  1. Authorization (Sends the user auth information)
+  2. Content-Type - Type of information client is sending (json, binary etc)
+  3. Referer - Which URL is this request coming from
+ 
+ 
+#### 2.1.0.1. Request headers
+-  The headers the *client* sends out in the request are known as `request` headers
+<img src="images/headers-1.webp" alt="Your long page image" style="max-width: 60%; margin: 10px; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+
+#### 2.1.0.2. Response headers
+- The headers that the *server* responds with are known as the `response` headers.
+<img src="images/headers-2.webp" alt="Your long page image" style="max-width: 60%; margin: 10px; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+
+
+
+
+---
+
+## 2.2. Create an HTTP Server - Express
+- Practice Code: [Calculator with Backend](/backend/calculator-http-server/)
+- Technically we could do this using DOM only using onclick and all.
+<img src="images/3-create-an-http-server.jpeg" alt="Your long page image" style="max-width: 60%; margin: 10px; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+
+---
+
+#### 2.2.0.1. The misconception
 - While building the calculator backend.
 - It is very much possible to create the calculator app using the DOM manipulation.
 - But that would make the app only a **client side** application, what that mean is, anyone can read the logic of the app how it’s get built, since the frontend will be rendered to the browser.
 - So when we are building the backend we are keeping the core logic of the app hidden.
 - But we need our frontend to talk to our backend, the frontend as a client and the backend as a server.
 - That is where Fetch api comes in
+
 ---
 
-## Fetch API
+## 2.3. Fetch API
 - This is how frontend talks to backend using the endpoints
-<img src="images/ss-FetchAPI.webp" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+<img src="images/ss-FetchAPI.webp" alt="Your long page image" style="max-width: 60%; margin: 10px; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
 
 - There are 2 high level ways a browser can send requests to an HTTP server:
 **1. From the browser URL (Default GET request):**
@@ -46,7 +100,7 @@
 
 - **JavaScript (Fetch API):** JavaScript running in the browser can make HTTP requests to a server using APIs the fetch API. These requests can be of various types (GET, POST, PUT, DELETE, etc.) and are commonly used for asynchronous data retrieval and manipulation (e.g., AJAX requests).
 
-### Fetch request examples
+### 2.3.1. Fetch request examples
 Server to send the request to - https://jsonplaceholder.typicode.com/posts/1 (GET request)
 
 ```html
@@ -71,22 +125,22 @@ Server to send the request to - https://jsonplaceholder.typicode.com/posts/1 (GE
 ```
 
 - till now we have built this, a functional backend of a calculator app
-<img src="images/image.png" alt="Your long page image" style="max-width: 60%; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+<img src="images/image.png" alt="Your long page image" style="max-width: 60%; margin: 10px; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
 
 --- 
 
 
-#### Fetch req sending using post method and the body or payload
+#### 2.3.1.1. Fetch req sending using post method and the body or payload
 - we have already sent the requests using params query. now let's try to send the req using payload
 - when using body, we have to send or post something from the client to the backend directly so we have to use app.post to read the data from the post method.
 
 
-### Recap and concept clearance for the topics done till now (Using GPT)
+### 2.3.2. Recap and concept clearance for the topics done till now (Using GPT)
 Yes — your intuition is correct. When you **send data in the request body (payload)**, you typically use the **POST method**. Let’s clarify how the different approaches work in backend development with **Express**.
 
 ---
 
-#### 1️⃣ Sending Data via Path Parameters (GET)
+#### 2.3.2.1. 1️⃣ Sending Data via Path Parameters (GET)
 
 Data is part of the **URL path**.
 
@@ -120,7 +174,7 @@ http://localhost:3000/add/5/7
 
 ---
 
-#### 2️⃣ Sending Data via Query Parameters (GET)
+#### 2.3.2.2. 2️⃣ Sending Data via Query Parameters (GET)
 
 Data is still in the **URL**, but after `?`.
 
@@ -154,7 +208,7 @@ http://localhost:3000/add?a=5&b=7
 
 ---
 
-#### 3️⃣ Sending Data via Body / Payload (POST)
+#### 2.3.2.3. 3️⃣ Sending Data via Body / Payload (POST)
 
 Now the data is **not visible in the URL**. (IMP)
 It is sent in the **request body**, which is why **POST is normally used**.
@@ -190,7 +244,7 @@ Data comes from:
 ```
 req.body
 ```
-#### the differences in the browser what actually happens when using body (payload) and query params
+#### 2.3.2.4. the differences in the browser what actually happens when using body (payload) and query params
 <div style="display: flex; justify-content: center; gap: 10px">
   <img src="images/ss-sumpayload.png" alt="First Image" style="width: 33%;"/>
   <img src="images/ss-sumheaders.png" alt="Second Image" style="width: 33%;"/>
@@ -200,7 +254,7 @@ req.body
 
 ---
 
-## 4️⃣ Why POST is Used for Payload
+### 2.3.3. 4️⃣ Why POST is Used for Payload
 
 Technically **GET could send a body**, but in practice:
 
@@ -224,7 +278,7 @@ POST /divide
 
 ---
 
-### 5️⃣ Example Without Axios (HTML Form)
+### 2.3.4. 5️⃣ Example Without Axios (HTML Form)
 
 You can send POST body using a simple HTML form. (We used fetch by the way)
 
@@ -264,7 +318,7 @@ So yes — **when sending payload/body, we normally use POST.**
 
 
 
-### Using axios (external library)
+### 2.3.5. Using axios (external library)
 
 ```html
 <!DOCTYPE html>
@@ -288,4 +342,288 @@ So yes — **when sending payload/body, we normally use POST.**
 
 </html>
 ```
+
+
+---
+
+## 2.4. Middlewares
+
+In Express.js, middleware refers to functions that have access to the request object (req), response object (res), and the next function in the application's request-response cycle. Middleware functions can perform a variety of tasks, such as 
+  1. Modifying the request or response objects.
+  2. Ending the request-response cycle.
+  3. Calling the next middleware function in the stack.
+
+<img src="images/middlewares.webp" alt="Your long page image" style="max-width: 60%; margin: 10px; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;">
+
+---
+
+- **Try running this code and see if the logs comes or not**
+
+```javascript
+app.use(function(req, res, next) {
+    console.log("request received");
+    next();
+})
+```
+```js
+app.get("/sum", function(req, res) {
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+```
+ 
+- **Modifying the request**
+```js
+app.use(function(req, res, next) {
+    req.name = "harkirat"
+    next();
+})
+```
+```js
+app.get("/sum", function(req, res) {
+    console.log(req.name);
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+```
+
+- **Ending the request/response cycle**
+```js
+app.use(function(req, res, next) {
+    res.json({
+        message: "You are not allowed"
+    })
+})
+```
+```js
+app.get("/sum", function(req, res) {
+    console.log(req.name);
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+```
+- **Calling the next middleware function in the stack.**
+
+```js
+app.use(function(req, res, next) {
+    console.log("request received");
+    next();
+})
+```
+```js
+app.get("/sum", function(req, res) {
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+```
+---
+
+
+### 2.4.1. Route specific middlewares
+
+Route-specific middleware in Express.js refers to middleware functions that are applied only to specific routes or route groups, rather than being used globally across the entire application
+const express = require('express');
+const app = express();
+
+**Middleware function**
+```js
+function logRequest(req, res, next) {
+  console.log(`Request made to: ${req.url}`);
+  next();
+}
+```
+**Apply middleware to a specific route**
+```js
+app.get('/special', logRequest, (req, res) => {
+  res.send('This route uses route-specific middleware!');
+});
+
+app.get("/sum", function(req, res) {
+    console.log(req.name);
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+```
+
+**Only the `/special` endpoint runs the middleware.**
+
+
+---
+
+#### 2.4.1.1. Simple Assignment questions on Middlewares
+Try these out yourself.
+1. Create a middleware function that logs each incoming request’s HTTP method, URL, and timestamp to the console
+2. Create a middleware that counts total number of requests sent to a server. Also create an endpoint that exposes it
+
+---
+
+### 2.4.2. Commonly used middlewares
+  Through your journey of writing express servers , you’ll find some commonly available (on npm) middlewares that you might want to use
+1. **express.json**
+  The express.json() middleware is a built-in middleware function in Express.js used to parse incoming request bodies that are formatted as JSON. This middleware is essential for handling JSON payloads sent by clients in POST or PUT requests.
+
+```js
+const express = require('express');
+const app = express();
+
+// Use express.json() middleware to parse JSON bodies
+app.use(express.json());
+
+// Define a POST route to handle JSON data
+app.post('/data', (req, res) => {
+  // Access the parsed JSON data from req.body
+  const data = req.body;
+  console.log('Received data:', data);
+
+  // Send a response
+  res.send('Data received');
+  });
+  ```
+```js
+  app.listen(3000, () => {
+    console.log('Server running on port 3000');
+  });
+```
+
+>  Try converting the `calculator` assignment to use `POST` endpoints. Check if it works with/without the `express.json` middleware
+
+- Express uses `bodyParser` under the hood - https://github.com/expressjs/express/blob/master/lib/express.js#L78C16-L78C26
+ 
+---
+
+## 2.5. cors - Cross origin resource sharing
+**Cross-Origin Resource Sharing (CORS)** is a *security feature implemented by web browsers* that controls how resources on a web server can be requested from another domain. It's a crucial mechanism for managing *cross-origin* requests and ensuring secure interactions between *different origins* on the web.
+ 
+**Cross origin request from the browser**
+
+<img src="images/cors1.webp" alt="Your long page image" style="max-width: 60%; margin-left: auto; margin-right: auto; border-radius: 10px; display: block; margin-top: 10px; margin-bottom: 10px">
+
+**Same request from Postman**
+<img src="images/cors2.webp" alt="Your long page image" style="max-width: 60%; margin-left: auto; margin-right: auto; border-radius: 10px; display: block; margin-top: 10px; margin-bottom: 10px">
+ 
+**Real world example**
+- Create an HTTP Server
+```js
+const express = require("express");
+
+const app = express();
+
+app.get("/sum", function(req, res) {
+    console.log(req.name);
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+
+app.listen(3000);
+```
+**Create an index.html file (public/index.html)**
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.6/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="posts"></div>
+  <script>
+    async function sendRequest() {
+      const res = await axios.get("http://localhost:3000/sum?a=1&b=2");
+    }
+
+    sendRequest();
+  </script>
+</body>
+
+</html>
+```
+- Serve the HTML File on a different port
+```bash
+cd public
+npx serve
+```
+<img src="images/cors3.webp" alt="Your long page image" style="max-width: 60%; margin-left: auto; margin-right: auto; border-radius: 10px; display: block; margin-top: 10px; margin-bottom: 10px">
+
+
+- You will notice the cross origin request fails
+- Add cors as a dependency
+  ```npm i cors```
+
+- Use the cors middleware
+```js
+const express = require("express");
+const cors = require("cors");
+const app = express();
+app.use(cors());
+
+app.get("/sum", function(req, res) {
+    console.log(req.name);
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+
+app.listen(3000);
+```
+<img src="images/cors4.webp" alt="Your long page image" style="max-width: 60%; margin-left: auto; margin-right: auto; border-radius: 10px; display: block; margin-top: 10px; margin-bottom: 10px">
+ 
+<h3>You dont need cors if the frontend and backend are on the same domain</h3>
+
+- Try serving the frontend on the same domain
+```js
+const express = require("express");
+const app = express();
+
+app.get("/sum", function(req, res) {
+    console.log(req.name);
+    const a = parseInt(req.query.a);
+    const b = parseInt(req.query.b);
+
+    res.json({
+        ans: a + b
+    })
+});
+
+app.get("/", function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+
+app.listen(3000);
+```
+Go to `localhost:3000` , notice that the underlying request doesn't fail with cors (even though we don’t have the cors middleware)
+<img src="images/cors5.webp" alt="Your long page image" style="max-width: 60%; margin-left: auto; margin-right: auto; border-radius: 10px; display: block; margin-top: 10px; margin-bottom: 10px">
+
+---
 
