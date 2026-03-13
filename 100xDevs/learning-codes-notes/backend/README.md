@@ -16,6 +16,14 @@
     - [2.3.3. 4️⃣ Why POST is Used for Payload](#233-4️⃣-why-post-is-used-for-payload)
     - [2.3.4. 5️⃣ Example Without Axios (HTML Form)](#234-5️⃣-example-without-axios-html-form)
     - [2.3.5. Using axios (external library)](#235-using-axios-external-library)
+      - [2.3.5.1. Are all these frontend code talking to the backend?](#2351-are-all-these-frontend-code-talking-to-the-backend)
+      - [2.3.5.2. Will the URL be the backend URL?](#2352-will-the-url-be-the-backend-url)
+      - [2.3.5.3. Is this URL called an API?](#2353-is-this-url-called-an-api)
+        - [2.3.5.3.1. Correct terminology](#23531-correct-terminology)
+      - [2.3.5.4. Important mistake in your POST code](#2354-important-mistake-in-your-post-code)
+      - [2.3.5.5. Why Axios feels simpler](#2355-why-axios-feels-simpler)
+      - [2.3.5.6. One conceptual model to remember](#2356-one-conceptual-model-to-remember)
+      - [2.3.5.7. One more deeper concept (very important)](#2357-one-more-deeper-concept-very-important)
   - [2.4. Middlewares](#24-middlewares)
     - [2.4.1. Route specific middlewares](#241-route-specific-middlewares)
       - [2.4.1.1. Simple Assignment questions on Middlewares](#2411-simple-assignment-questions-on-middlewares)
@@ -342,6 +350,262 @@ So yes — **when sending payload/body, we normally use POST.**
 
 </html>
 ```
+
+
+---
+
+#### 2.3.5.1. Are all these frontend code talking to the backend?
+
+✅ **Yes.**
+
+When you write something like:
+
+```javascript
+const res = await fetch("http://localhost:3000/")
+```
+
+your program is making an **HTTP request** to a **server**.
+
+Typical architecture:
+
+```
+Frontend (Browser / React / HTML / JS)
+        │
+        │ HTTP Request
+        ▼
+Backend Server (Node / Express / Django / Flask / etc.)
+        │
+        │ Response (JSON / text / html)
+        ▼
+Frontend receives data
+```
+
+So this code is exactly how the **frontend communicates with the backend**.
+
+Even if you run it in Node while learning, the **concept is identical** to frontend communication.
+
+Example real frontend case:
+
+```javascript
+fetch("https://api.myapp.com/users")
+```
+
+Browser → Backend server → Response → Browser
+
+---
+
+#### 2.3.5.2. Will the URL be the backend URL?
+
+✅ **Yes.**
+
+The URL you pass is the **endpoint of your backend server**.
+
+Example:
+
+```
+http://localhost:3000/users
+```
+
+Breakdown:
+
+```
+http://localhost:3000
+        │
+        └── backend server address
+
+/users
+        │
+        └── route handled by backend
+```
+
+Example Express backend:
+
+```javascript
+app.get("/users", (req, res) => {
+    res.json({name: "Pritam"});
+});
+```
+
+Frontend request:
+
+```javascript
+fetch("http://localhost:3000/users")
+```
+
+---
+
+#### 2.3.5.3. Is this URL called an API?
+
+⚠️ **Not exactly.**
+This is a **very common misunderstanding.**
+
+##### 2.3.5.3.1. Correct terminology
+
+```
+API
+ └── endpoints (URLs)
+```
+
+Example API:
+
+```
+User API
+```
+
+Endpoints inside it:
+
+```
+GET  /users
+POST /users
+GET  /users/:id
+DELETE /users/:id
+```
+
+Each **endpoint** has a **URL**.
+
+Example endpoint URL:
+
+```
+https://api.example.com/users
+```
+
+So technically:
+
+| Term     | Meaning                                 |
+| -------- | --------------------------------------- |
+| API      | The whole interface provided by backend |
+| Endpoint | A specific route                        |
+| URL      | Address used to access endpoint         |
+
+Example:
+
+```
+API: User API
+Endpoint: GET /users
+URL: https://api.example.com/users
+```
+
+But in real life many developers casually say:
+
+> "Call this API"
+
+Even though they mean:
+
+> "Call this API endpoint URL"
+
+---
+
+#### 2.3.5.4. Important mistake in your POST code
+
+Your fetch POST body is **incorrect**.
+
+You wrote:
+
+```javascript
+body : {
+    "a" : 1,
+    "b" : 2
+}
+```
+
+But **fetch requires the body to be a string**.
+
+Correct version:
+
+```javascript
+body: JSON.stringify({
+    a: 1,
+    b: 2,
+    name: "pritam"
+}),
+headers: {
+    "Content-Type": "application/json",
+    "Auth": "iPritam"
+}
+```
+
+So correct POST:
+
+```javascript
+const res = await fetch(url, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        a: 1,
+        b: 2
+    })
+});
+```
+
+Axios does this **automatically**, which is why it feels easier.
+
+---
+
+#### 2.3.5.5. Why Axios feels simpler
+
+Axios automatically:
+
+* converts body → JSON
+* parses response → JSON
+* handles headers
+
+Example:
+
+```javascript
+axios.post(url, {
+    name: "Pritam"
+})
+```
+
+Axios internally does:
+
+```
+JSON.stringify(body)
+Content-Type: application/json
+res.json()
+```
+
+---
+
+#### 2.3.5.6. One conceptual model to remember
+
+```
+Frontend
+   │
+   │ fetch / axios
+   ▼
+API Endpoint (URL)
+   │
+   ▼
+Backend Server
+   │
+   ▼
+Response (JSON / text / html)
+```
+
+---
+
+#### 2.3.5.7. One more deeper concept (very important)
+
+Every API endpoint is defined by:
+
+```
+METHOD + URL
+```
+
+Example:
+
+```
+GET    /users
+POST   /users
+PUT    /users/1
+DELETE /users/1
+```
+
+Same URL but **different methods = different actions**.
+
 
 
 ---

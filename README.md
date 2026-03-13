@@ -1,3 +1,27 @@
+# 100xSchool Repository
+
+This repository contains all assignments, lecture notes, and projects from the 100xDevs cohort.
+
+---
+
+## 📂 Project Structure
+
+```text
+.
+├── 📁 100xDevs/                   # Main Cohort Content
+│   ├── 📁 Advanced-Javascript/    # Callbacks, Promises, and Async
+│   └── 📁 week-1-assignment/      # Basic JS assignments
+├── 📁 DSA-Assignments/            # Searching, Sorting, and Arrays
+├── 📁 Projects/                   # Individual and group projects
+├── 📄 .gitignore                  # Global exclusion rules
+└── 📄 README.md                   # You are here
+```
+
+<details>
+<summary><b>Click to expand full file-level tree</b></summary>
+
+</details>
+
 ```
 .
 ├── 100xDevs
