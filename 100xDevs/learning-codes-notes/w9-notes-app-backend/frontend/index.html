@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App home page</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+
+        #main{
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 60px;
+            justify-content: center;
+
+        }
+
+        #allNotes{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input {
+            line-height: 100px;
+            background: transparent;
+            color: rgb(80, 80, 80);
+            border-radius: 15px;
+            max-width: 60%;
+            font-size: 15px;
+            border: 1px solid black;
+
+        }
+
+        button {
+            line-height: 40px;
+            background: transparent;
+            color: rgb(80, 80, 80);
+            border-radius: 15px;
+            max-width: 60%;
+            font-size: 15px;
+            border: 1px solid black;
+        }
+
+        #newNotes{
+            height: 300px;
+            width: 250px;
+            background-color: rgb(234, 234, 233);
+            color: rgb(27, 27, 27);
+            font-size: 12px;
+            font-weight: 300;
+            border: 1px solid rgb(88, 88, 88);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        #allNotes {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        #viewallNotes{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 10px;
+            gap: 20px;
+        }
+        h1{
+            align-items: center;
+        }
+
+    </style>
+
+
+</head>
+<body>
+
+    <h1>My Notes</h1>
+
+
+    <div id="main">
+        <!-- <label for="notes">Write your Note</label> -->
+        <input placeholder="Write your notes" id="notes" name="comment" rows="4" cols="50"></input>
+        <button onclick="createNote()">Create Note</button>
+
+
+        <div id="allNotes">
+            Loading Notes...
+        </div>
+
+        <button onclick="clearNotes()">Clear Notes</button>
+        <button onclick="getAllNotes()">See All Notes</button>
+    </div>
+
+    <div id="viewallNotes">
+
+    </div>
+    
+
+
+    <script>
+        setTimeout(() => {
+            document.getElementById("allNotes").innerHTML = ""
+        }, 3000);
+        async function createNote() {
+            let userNote = document.getElementById("notes").value;
+            if (userNote === "") {return}
+            const res = await axios.post("http://localhost:3000/notes", {
+                note : userNote
+            })
+
+            //show the new note
+            const newNote = document.createElement("div");
+
+            newNote.innerHTML = document.getElementById("notes").value;
+            newNote.setAttribute('id', 'newNotes');
+            
+            document.getElementById("allNotes").appendChild(newNote);
+            alert(res.data.message);
+
+            //make the input box empty
+            document.getElementById("notes").value = "";
+        }
+
+
+        async function getAllNotes() {
+            const res = await axios({
+                url: "http://localhost:3000/getnotes",
+                method: "get",
+            })
+            const notes = res.data.notes;
+
+            const elm = document.getElementById("viewallNotes");
+
+            for (let i = 0; i < notes.length; i++) {
+                const div = document.createElement("div");
+                div.innerHTML = notes[i];
+                div.setAttribute('id', 'note('+ i +')');
+                div.setAttribute("style", "height: 100px; width: 100px; border-radius: 10px; background-color: black; color: white; padding: 10px; box-shadow: 5px 10px 8px #888888;");
+                elm.appendChild(div);
+            }
+        }
+
+
+
+
+        function clearNotes() {
+            document.getElementById("allNotes").innerHTML = "";
+        }
+    </script>
+</body>
+</html>
