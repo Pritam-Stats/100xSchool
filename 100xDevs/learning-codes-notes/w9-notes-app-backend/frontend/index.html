@@ -41,6 +41,7 @@
             max-width: 60%;
             font-size: 15px;
             border: 1px solid black;
+            cursor: pointer;
         }
 
         #newNotes{
@@ -82,7 +83,16 @@
 <body>
 
     <h1>My Notes</h1>
-
+    <div id="signup">
+        <a href="/signuppage">
+        <button>Signup</button>
+        </a>
+    </div>
+    <div id="signin">
+        <a href="/signinpage">
+            <button>Signin</button>
+        </a>
+    </div>
 
     <div id="main">
         <!-- <label for="notes">Write your Note</label> -->
@@ -105,6 +115,8 @@
 
 
     <script>
+
+
         setTimeout(() => {
             document.getElementById("allNotes").innerHTML = ""
         }, 3000);
@@ -126,6 +138,7 @@
 
             //make the input box empty
             document.getElementById("notes").value = "";
+            
         }
 
 
