@@ -6,120 +6,74 @@
     <title>Notes App home page</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <style>
-
-        #main{
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-            padding: 60px;
-            justify-content: center;
-
-        }
-
-        #allNotes{
-            display: flex;
-            justify-content: space-between;
-        }
-
-        input {
-            line-height: 100px;
-            background: transparent;
-            color: rgb(80, 80, 80);
-            border-radius: 15px;
-            max-width: 60%;
-            font-size: 15px;
-            border: 1px solid black;
-
-        }
-
-        button {
-            line-height: 40px;
-            background: transparent;
-            color: rgb(80, 80, 80);
-            border-radius: 15px;
-            max-width: 60%;
-            font-size: 15px;
-            border: 1px solid black;
-            cursor: pointer;
-        }
-
-        #newNotes{
-            height: 300px;
-            width: 250px;
-            background-color: rgb(234, 234, 233);
-            color: rgb(27, 27, 27);
-            font-size: 12px;
-            font-weight: 300;
-            border: 1px solid rgb(88, 88, 88);
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        #allNotes {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        #viewallNotes{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 10px;
-            gap: 20px;
-        }
-        h1{
-            align-items: center;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/style.css">
 
 
 </head>
 <body>
 
-    <h1>My Notes</h1>
-    <div id="signup">
-        <a href="/signuppage">
-        <button>Signup</button>
-        </a>
-    </div>
-    <div id="signin">
-        <a href="/signinpage">
-            <button>Signin</button>
-        </a>
-    </div>
+    <div id="container">
 
-    <div id="main">
-        <!-- <label for="notes">Write your Note</label> -->
-        <input placeholder="Write your notes" id="notes" name="comment" rows="4" cols="50"></input>
-        <button onclick="createNote()">Create Note</button>
+        <nav>
+            <div class="nav-left">
+                <h4>Notes App</h4>
+            </div>
+
+            <div class="nav-right">
+                <a href="/signuppage"><button>Sign up</button></a>
+                <a href="/signinpage"><button>Log in</button></a>
+            </div>
+        </nav>
+
+    <!-- LEFT: Black Theme -->
 
 
-        <div id="allNotes">
-            Loading Notes...
+     
+    <div class="left">
+
+
+        <h1>Write your Notes Here</h1>
+        
+        <div id="customAlert" ></div>
+
+            
+
+        <div id="noteSection">
+
+            <textarea id="notes" placeholder="Write your note..."></textarea>
+
+            <div class="actions">
+                <button onclick="createNote()">Create</button>
+                <button onclick="clearNotes()">Clear</button>
+                <button onclick="getAllNotes()">See All</button>
+            </div>  
         </div>
-
-        <button onclick="clearNotes()">Clear Notes</button>
-        <button onclick="getAllNotes()">See All Notes</button>
+        <h2>Recent Notes</h2>
+        <div id="recentnotes"></div>
+        <div id="loading">Loading Notes...</div>
+        
     </div>
 
-    <div id="viewallNotes">
-
+    <!-- RIGHT: White Theme -->
+    <div class="right">
+        <h2>All Notes</h2>
+        <div id="viewallNotes"></div>
+        <!-- <button onclick="clearAllNotes()">Clear the page</button> -->
     </div>
-    
+
+
+
+</div>
 
 
     <script>
 
 
         setTimeout(() => {
-            document.getElementById("allNotes").innerHTML = ""
+            document.getElementById("loading").innerHTML = ""
         }, 3000);
+
+
         async function createNote() {
             let userNote = document.getElementById("notes").value;
             if (userNote === "") {return}
@@ -131,10 +85,12 @@
             const newNote = document.createElement("div");
 
             newNote.innerHTML = document.getElementById("notes").value;
-            newNote.setAttribute('id', 'newNotes');
+            // newNote.setAttribute('id', 'newNotes');
+            newNote.className = "newNotes"
+            newNote.setAttribute("style", "min-width: 70%; min-hight: 100px")
             
-            document.getElementById("allNotes").appendChild(newNote);
-            alert(res.data.message);
+            document.getElementById("recentnotes").appendChild(newNote);
+            showAlert(res.data.message);
 
             //make the input box empty
             document.getElementById("notes").value = "";
@@ -148,24 +104,49 @@
                 method: "get",
             })
             const notes = res.data.notes;
-
+            console.log(notes)
+            if (notes.length === 0) {showAlert("No notes found"); return}
             const elm = document.getElementById("viewallNotes");
+            elm.innerHTML = ""
 
             for (let i = 0; i < notes.length; i++) {
                 const div = document.createElement("div");
                 div.innerHTML = notes[i];
                 div.setAttribute('id', 'note('+ i +')');
-                div.setAttribute("style", "height: 100px; width: 100px; border-radius: 10px; background-color: black; color: white; padding: 10px; box-shadow: 5px 10px 8px #888888;");
+                div.setAttribute("style", "min-height: 70px; min-width: 90%; border-radius: 10px; background-color: black; color: white; padding: 10px; box-shadow: 5px 10px 8px #888888;");
                 elm.appendChild(div);
             }
+
+            const clearButton = document.createElement("button")
+            clearButton.setAttribute("onclick", "clearAllNotes()");
+            clearButton.innerHTML = "Clear all notes"
+            elm.appendChild(clearButton);
         }
 
 
 
 
         function clearNotes() {
-            document.getElementById("allNotes").innerHTML = "";
+            document.getElementById("recentnotes").innerHTML = "";
         }
+
+          function showAlert(message) {
+                const box = document.getElementById("customAlert");
+                box.innerText = message;
+                box.style.display = "block";
+
+                setTimeout(() => {
+                    box.style.display = "none";
+                }, 3000);
+          }
+
+        const clearAllNotes = () => {
+            document.getElementById("viewallNotes").innerHTML = ""
+        }
+
+
+
+        
     </script>
 </body>
 </html>

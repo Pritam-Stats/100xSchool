@@ -75,17 +75,29 @@
         font-weight: 300;
     }
 
-    #customAlert{
+    #customAlert2{
     display:none;
     position:fixed;
-    top:20px;
-    right:20px;
+    top:5%;
+    right:5%;
     background: rgb(247, 40, 40);
     color:white;
     padding:15px 20px;
     border-radius:5px;
     font-family:Arial;
     box-shadow: 0px 0px 10px red;
+}
+    #customAlert1{
+    display:none;
+    position:fixed;
+    top:20px;
+    right:20px;
+    background: rgb(2, 69, 9);
+    color:white;
+    padding:15px 20px;
+    border-radius:5px;
+    font-family:Arial;
+    box-shadow: 0px 0px 10px rgb(32, 248, 61);
 }
 
     
@@ -110,7 +122,9 @@
     </div>
 </div>
 
-<div id="customAlert" >
+<div id="customAlert1" >
+</div>
+<div id="customAlert2" >
 </div>
 
 
@@ -121,7 +135,7 @@
         const password = document.getElementById("password").value;
 
         if (!name || !username || !password) {
-            showAlert("All fields are required!!");
+            showAlert2("All fields are required!!");
             return;
         }
 
@@ -137,18 +151,28 @@
                 username: username,
                 password: password
             });
-            showAlert(res.data.message);
+            showAlert1(res.data.message);
 
             const signin = document.getElementById("signin-btn");
             signin.innerHTML = "<a href = '/signinpage'>Signin</a>";
         } catch(err) {
-            showAlert(err.response?.data?.message)
+            showAlert2(err.response?.data?.message)
         }
 
     }
 
-    function showAlert(message) {
-    const box = document.getElementById("customAlert");
+    function showAlert1(message) {
+    const box = document.getElementById("customAlert1");
+    box.innerText = message;
+    box.style.display = "block";
+
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 3000);
+}
+
+    function showAlert2(message) {
+    const box = document.getElementById("customAlert2");
     box.innerText = message;
     box.style.display = "block";
 

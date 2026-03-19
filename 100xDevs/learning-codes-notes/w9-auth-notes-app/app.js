@@ -26,9 +26,9 @@ app.post("/notes", (req, res) => {
 
 // get all notes
 app.get("/getnotes", (req, res) => {
-    res.send(res.json({
+    res.json({
         notes
-    }))
+    })
 })
 
 
@@ -86,7 +86,6 @@ app.post("/signin", function (req, res) {
         })
     };
 
-    const name = 
     res.json({
         message : "you are in ",
         name: verified.name
@@ -99,6 +98,10 @@ app.post("/signin", function (req, res) {
 
 
 
-app.listen(3000, ()=>{
+const server = app.listen(3000, () => {
     console.log("Server running on 3000")
-})
+});
+
+// console.log(server);
+
+app.use(express.static(path.join(__dirname, "frontend")));
