@@ -688,5 +688,8 @@ Frontend (HTML) ↔ Backend (Routes) ↔ Data (API)
 ---
 
 
-## 9.17. Next - Implement JWT
+## 9.17. Implementing JWT - 20th March
 
+**sign up get back a 200 status code but sign in get back a jwt token**
+
+- Who has the token code will have the power to access the account

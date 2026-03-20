@@ -9,12 +9,44 @@ app.get("/", (req, res) => {
 })
 
 
-let notes = [];
+// let notes = [];
+// to change the data structure to store the notes as well as the corresponding user
+let notes = [{
+        username: 'kirat',
+        note: 'code karooo'
+    },
+    {
+        username: "ipritam",
+        note: "Code code"
+    }
+
+]
 
 app.use(express.json());
 app.post("/notes", (req, res) => {
+    //check if they have sent the right header, extract who the user is
+    const token = req.headers.token;
+    if (!token) {
+        res.status(404).send({
+            message: "you are not logged in!"
+        })
+        return;
+    }
+
+    const decoded = jwt.verify(token, "secretcode");
+    const username = decoded.username;
+
+    if (!username) {
+        res.status(406).json({
+            message: "Malformed token"
+        })
+        return;
+    }
+
+
+
     const note = req.body.note;
-    notes.push(note);
+    notes.push({username, note});
 
     res.send({
         message: "Done: Note added"
@@ -24,15 +56,55 @@ app.post("/notes", (req, res) => {
 
 
 
+
 // get all notes
 app.get("/getnotes", (req, res) => {
+
+    //check the token in headers
+    const token = req.headers.token;
+    if (!token) {
+        res.status(404).send({
+            message: "you are not logged in!"
+        })
+        return;
+    }
+
+    const decoded = jwt.verify(token, "secretcode");
+    const username = decoded.username;
+
+    if (!username) {
+        res.status(406).json({
+            message: "Malformed token"
+        })
+        return;
+    }
+
+    //filter the note according to the user
+    const usernotes = notes.filter(note => note.username === username)
     res.json({
-        notes
+        notes: usernotes
     })
 })
 
 
-let users = []  //array of objects {username: username, password: password}
+let users = [{
+        name: 'Harkirat',
+        username: "kirat",
+        password: 1234
+    },
+    {
+        name: "Pritam",
+        username: "ipritam",
+        password: 123
+    }
+
+
+
+]  //array of objects {username: username, password: password}
+
+
+
+
 
 app.get("/signuppage", (req, res) => {
     res.sendFile(path.join(__dirname, "/frontend/signup.html"))
@@ -86,15 +158,25 @@ app.post("/signin", function (req, res) {
         })
     };
 
+    //json web token: for now let's assume this as a encryption (Though it's a wrong statement; jwt does something called digital signature)
+    const token = jwt.sign({
+        username: username
+    }, 'secretcode')
+
+    res.json({
+        token: token
+    })
+
     res.json({
         message : "you are in ",
         name: verified.name
     })
 
+    
 
 })
 
-
+// sign up get back a 200 status code but sign in get back a jwt token
 
 
 
