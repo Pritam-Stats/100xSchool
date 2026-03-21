@@ -693,3 +693,173 @@ Frontend (HTML) ↔ Backend (Routes) ↔ Data (API)
 **sign up get back a 200 status code but sign in get back a jwt token**
 
 - Who has the token code will have the power to access the account
+
+# 10. Day 4 - Backend working
+the backend is working but we have to use the frontend properly like when we login it should redirect me to my home page with my notes..
+- the token should be stored in somewhere and send in the backend what we getting while login.
+- right now we are doing it manually on requestly by copy pasting the tokens.
+
+
+# 11. Localstorage
+- during signin we sent the req to our backend, backend return back a token and ideally should redirect us to our home page.
+- So in signin page we dump the received token to the browsers localstorage.
+
+
+
+# JWT & Authentication — Quick Notes
+
+## 1. JWT Basics
+
+* JWT = `HEADER.PAYLOAD.SIGNATURE`
+* **Header** → algorithm info (same for all tokens)
+* **Payload** → user data (readable, not encrypted)
+* **Signature** → ensures token is not tampered
+
+---
+
+## 2. Key JWT Functions
+
+### `jwt.sign()`
+
+Creates a token:
+
+```js
+jwt.sign(payload, secret, { expiresIn: "1h" })
+```
+
+### `jwt.verify()`
+
+Validates token:
+
+```js
+jwt.verify(token, secret)
+```
+
+### `jwt.decode()`
+
+Reads token (unsafe, no verification):
+
+```js
+jwt.decode(token)
+```
+
+---
+
+## 3. Important Concepts
+
+* JWT is **not encryption**, it is **digitally signed**
+* Anyone can read payload → do NOT store sensitive data
+* Security comes from **secret key + signature**
+
+---
+
+## 4. Good JWT Payload Design
+
+✔ Recommended:
+
+```json
+{
+  "userId": 1,
+  "jti": "unique-id",
+  "iat": ...,
+  "exp": ...
+}
+```
+
+❌ Avoid:
+
+* Password (even hashed)
+* Sensitive data
+* Large payloads
+
+---
+
+## 5. Why Tokens Were Same Earlier
+
+* Payload too simple (`{ username }`)
+* Same secret
+* Similar timestamps
+
+✔ Fix:
+
+* Add `userId`
+* Add `jti` (unique ID)
+* Add `exp`
+
+---
+
+## 6. Expiry Behavior
+
+* `exp` defines token lifetime
+* After expiry:
+
+  * `jwt.verify()` → throws error
+  * Server returns `401`
+* Token still exists but is **invalid**
+
+---
+
+## 7. Authentication Flow
+
+```text
+Signup → hash password (bcrypt)
+Signin → verify password → issue JWT
+Frontend → store token
+Requests → send token
+Backend → verify token → allow/deny
+```
+
+---
+
+## 8. bcrypt Basics
+
+### Hash password:
+
+```js
+bcrypt.hash(password, 10)
+```
+
+* `10` = salt rounds (security level)
+
+### Compare password:
+
+```js
+await bcrypt.compare(password, hashedPassword)
+```
+
+* No need to pass salt rounds in compare
+
+---
+
+## 9. Environment Variables
+
+Use:
+
+```js
+process.env.JWT_SECRET
+```
+
+Instead of:
+
+```js
+"secretcode"
+```
+
+✔ Store in `.env` file
+✔ Never commit `.env` to GitHub
+
+---
+
+## 10. Key Principles
+
+* JWT = identity proof, not secret storage
+* Keep payload minimal
+* Always verify token on protected routes
+* Password is used only during login, never after
+
+---
+
+## Next Step
+
+* Build **JWT verification middleware**
+* Protect routes using `jwt.verify()`

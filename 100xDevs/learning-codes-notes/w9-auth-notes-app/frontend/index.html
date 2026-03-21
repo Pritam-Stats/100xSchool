@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App home page</title>
+    <title>NotesApp</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <link rel="stylesheet" href="/style.css">
@@ -19,9 +19,13 @@
                 <h4>Notes App</h4>
             </div>
 
+            <div id="usernameHeading">
+
+            </div>
+
             <div class="nav-right">
-                <a href="/signuppage"><button>Sign up</button></a>
-                <a href="/signinpage"><button>Log in</button></a>
+                <a href="/signup"><button>Sign up</button></a>
+                <a href="/signin"><button>Log in</button></a>
             </div>
         </nav>
 
@@ -67,30 +71,104 @@
 
 
     <script>
-
-
+        console.log("control reached here")
         setTimeout(() => {
             document.getElementById("loading").innerHTML = ""
         }, 3000);
 
+        //get the name
+        const name = localStorage.getItem("name");
+        const usernamediv = document.getElementById("usernameHeading")
+        usernamediv.innerHTML = name;
+        usernamediv.setAttribute("style", "font-family: monospace; color: cyan");
+
+        console.log("control reached here")
+
+        //if we got the name in the local storage means logged in;
+        // we don't need to show login and signup
+        if (name) {
+            document.querySelector(".nav-right").innerHTML = ""
+            document.querySelector(".nav-right").innerHTML = "<a><button id='logout-btn'>Log out</button></a>"
+        };
+
+        document.addEventListener('click', function (e) {
+            if (e.target.id === "logout-btn") {
+                logout();
+            }
+        });
+        
+
+        function logout(){
+            showAlert("Logging you out..")
+            setTimeout(() => {
+                localStorage.removeItem("name")
+                localStorage.removeItem("auth")
+                // window.location = "/signin"
+                location.reload()
+            }, 2000); 
+        };
+
+        
+
 
         async function createNote() {
             let userNote = document.getElementById("notes").value;
+
+            const token = localStorage.getItem("auth")
+
+
+            if (!token || token == "null"){
+                showAlert("Please log in")
+                return
+            }
+
             if (userNote === "") {return}
-            const res = await axios.post("http://localhost:3000/notes", {
-                note : userNote
-            })
+            try {
+
+                // const res = await fetch("http://localhost:3000/createnotes", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //         "Authorization": `Bearer ${token}`
+                //     },
+                //     body: JSON.stringify({
+                //         note: userNote
+                //     })
+                // });
+
+                // const data = await res.json();
+
+
+
+                const res = await axios.post(
+                "http://localhost:3000/createnotes",
+                { note: userNote },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+                );
+                showAlert("note sent");
+
+                const newNote = document.createElement("div");
+
+                newNote.innerHTML = document.getElementById("notes").value;
+                // newNote.setAttribute('id', 'newNotes');
+                newNote.className = "newNotes"
+                newNote.setAttribute("style", "min-width: 70%; min-height: 100px")
+                console.log("Control reached in appedning child")
+                document.getElementById("recentnotes").appendChild(newNote);
+                showAlert(res.data.message);
+
+            } catch (err){
+                showAlert(`Some error occurred while creating note ${err}`);
+                return
+            }
+            
 
             //show the new note
-            const newNote = document.createElement("div");
-
-            newNote.innerHTML = document.getElementById("notes").value;
-            // newNote.setAttribute('id', 'newNotes');
-            newNote.className = "newNotes"
-            newNote.setAttribute("style", "min-width: 70%; min-hight: 100px")
             
-            document.getElementById("recentnotes").appendChild(newNote);
-            showAlert(res.data.message);
 
             //make the input box empty
             document.getElementById("notes").value = "";
@@ -99,29 +177,48 @@
 
 
         async function getAllNotes() {
-            const res = await axios({
-                url: "http://localhost:3000/getnotes",
-                method: "get",
-            })
-            const notes = res.data.notes;
-            console.log(notes)
-            if (notes.length === 0) {showAlert("No notes found"); return}
-            const elm = document.getElementById("viewallNotes");
-            elm.innerHTML = ""
 
-            for (let i = 0; i < notes.length; i++) {
-                const div = document.createElement("div");
-                div.innerHTML = notes[i];
-                div.setAttribute('id', 'note('+ i +')');
-                div.setAttribute("style", "min-height: 70px; min-width: 90%; border-radius: 10px; background-color: black; color: white; padding: 10px; box-shadow: 5px 10px 8px #888888;");
-                elm.appendChild(div);
+            const token = localStorage.getItem("auth")
+
+
+            if (!token || token == "null"){
+                showAlert("Please log in")
+                return
             }
 
-            const clearButton = document.createElement("button")
-            clearButton.setAttribute("onclick", "clearAllNotes()");
-            clearButton.innerHTML = "Clear all notes"
-            elm.appendChild(clearButton);
-        }
+            try {
+
+                const res = await axios({
+                url: "http://localhost:3000/getnotes",
+                method: "get",
+                headers: {
+                    token: localStorage.getItem("auth")
+                }
+            });
+                const notes = res.data.notes;
+                console.log(notes)
+                if (notes.length === 0) {showAlert("No notes found"); return}
+                const elm = document.getElementById("viewallNotes");
+                elm.innerHTML = ""
+
+                for (let i = 0; i < notes.length; i++) {
+                    const div = document.createElement("div");
+                    div.innerHTML = notes[i].note;
+                    div.setAttribute('id', 'note('+ i +')');
+                    div.setAttribute("style", "min-height: 70px; min-width: 90%; border-radius: 10px; background-color: black; color: white; padding: 10px; box-shadow: 5px 10px 8px #888888;");
+                    elm.appendChild(div);
+                }
+
+                const clearButton = document.createElement("button")
+                clearButton.setAttribute("onclick", "clearAllNotes()");
+                clearButton.innerHTML = "Clear all notes"
+                elm.appendChild(clearButton);
+
+            } catch(err) {
+                showAlert(`Some error occurred: ${err}`)
+            }
+            
+        };
 
 
 

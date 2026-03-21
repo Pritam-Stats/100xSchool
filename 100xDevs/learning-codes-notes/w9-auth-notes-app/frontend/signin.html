@@ -73,9 +73,15 @@
     <input type="password" id="password" placeholder="Password">
 
     <button onclick="signin()">Login</button>
+    <button onclick="gotosignup()">New here? Create an account</button>
 </div>
 
 <script>
+    function gotosignup(){
+        setTimeout(() => {
+            window.location = "/signup"
+        }, 1000);
+    }
 async function signin() {
 
     const username = document.getElementById("username").value;
@@ -93,6 +99,12 @@ async function signin() {
         });
 
         alert(res.data.message + res.data.name);
+        const token = res.data.token; // get the token
+        localStorage.setItem("auth", token); //dump it to the localstorage
+        localStorage.setItem("name", res.data.name); //dump it to the localstorage
+
+        window.location = '/'   //redirect to first page
+
     } catch (err) {
         alert(err.response?.data?.message || "Error");
     }

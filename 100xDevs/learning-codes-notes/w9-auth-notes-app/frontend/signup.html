@@ -152,9 +152,13 @@
                 password: password
             });
             showAlert1(res.data.message);
-
-            const signin = document.getElementById("signin-btn");
-            signin.innerHTML = "<a href = '/signinpage'>Signin</a>";
+            
+            setTimeout(() => {
+                window.location = '/signin'
+            }, 3000);
+            
+            // const signin = document.getElementById("signin-btn");
+            // signin.innerHTML = "<a href = '/signin'>Signin</a>";
         } catch(err) {
             showAlert2(err.response?.data?.message)
         }
