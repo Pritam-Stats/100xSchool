@@ -8,7 +8,7 @@ let ISSUE_ID = 3;
 
 const USERS = [{
     id: 1,
-    username: "harkirat", // uniquenss constraint
+    username: "harkirat", // uniqueness constraint
     password: "123123"
 }, {
     id: 2,
@@ -20,21 +20,28 @@ const ORGANIZATIONS = [{
     id: 1,
     title: "100xdevs",
     description: "Learning coding platform",
-    admin: 1,
-    members: [2]
+    admin: 1,   //id
+    members: [2]    //in terms of ids, who will get the access
 }, {
     id: 2,
-    title: "ramans org",
+    title: "pritam's org",
     description: "Experimenting",
     admin: 1,
     members: []
 }];
 
-const BORADS = [{
-    id: 1,
-    title: "100xschool website (frontend",
-    organizationId: 1
-}];
+const BOARDS = [
+    {
+        id: 1,
+        title: "100xdevs website (frontend",
+        organizationId: 1
+    },
+    {
+        id: 2,
+        title: "100xdevs website (frontend",
+        organizationId: 1
+    },
+];
 
 const ISSUES = [{
     id: 1,
@@ -47,6 +54,8 @@ const ISSUES = [{
 }];
 
 
+//init
+
 const app = express();
 
 app.listen(3000, () => {
@@ -54,12 +63,12 @@ app.listen(3000, () => {
 });
 
 app.get("/", (req, res) => {
-    res.send("Index route");
+    res.send("Landing Page");
 })
 
 
 //create endpoints for users
-app.use(express.json());
+app.use(express.json());    //imp middlewares to read json 
 app.post("/signup", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;

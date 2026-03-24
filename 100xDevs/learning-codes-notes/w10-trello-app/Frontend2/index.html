@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Minimal Trello-style project management landing page."
+    />
+    <title>Trellix - Organize Work Visually</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="graph-bg" aria-hidden="true"></canvas>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="#">Trellix</a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#">Features</a>
+          <a href="#">Pricing</a>
+          <a href="#">Docs</a>
+        </nav>
+        <div class="auth-actions">
+          <a class="btn nav-signup" href="#">Signup</a>
+          <button class="btn btn-ghost" type="button">Signin</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="hero container">
+      <p class="eyebrow">Minimal project flow</p>
+      <h1>Plan, track, and ship with calm focus.</h1>
+      <p class="subtitle">
+        A clean Trello-style workspace for teams that want visual clarity
+        without clutter.
+      </p>
+      <div class="actions">
+        <button class="btn btn-solid" type="button">Start Free</button>
+        <button class="btn btn-ghost" type="button">View Demo</button>
+      </div>
+
+      <section class="demo-shell" aria-label="App Demo Preview">
+        <div class="demo-head">
+          <p class="demo-label">How your board will look in app</p>
+        </div>
+        <div class="board-preview">
+          <article class="list">
+            <h2>To Do</h2>
+            <div class="card">Design landing page</div>
+            <div class="card">Set up API schema</div>
+          </article>
+          <article class="list">
+            <h2>In Progress</h2>
+            <div class="card">Build auth flow</div>
+            <div class="card">Connect board state</div>
+          </article>
+          <article class="list">
+            <h2>Done</h2>
+            <div class="card">Project kickoff</div>
+            <div class="card">User stories drafted</div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
