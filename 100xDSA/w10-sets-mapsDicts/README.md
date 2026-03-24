@@ -239,3 +239,215 @@ You learned:
 * Real problem applications
 
 This is **core DSA + backend foundation**.
+
+---
+
+# 📘 Intersection of Two Arrays II — Notes
+
+---
+
+## 🔹 Problem Summary
+
+Given two arrays `A` and `B`, find their **intersection with multiplicity**.
+
+* Each element `x` should appear:
+
+```
+min(count of x in A, count of x in B)
+```
+
+* Output must be in **increasing order**.
+
+---
+
+## 🔹 Key Idea
+
+This is a **multiset intersection problem**.
+
+👉 We must track **frequency**, not just presence.
+
+---
+
+## 🔹 Approach (Dictionary / HashMap)
+
+### Step 1: Count frequencies
+
+```python
+d1 = {}
+for x in nums1:
+    d1[x] = d1.get(x, 0) + 1
+
+d2 = {}
+for y in nums2:
+    d2[y] = d2.get(y, 0) + 1
+```
+
+---
+
+### Step 2: Compute intersection
+
+```python
+ans = {}
+for x in d1:
+    if x in d2:
+        ans[x] = min(d1[x], d2[x])
+```
+
+---
+
+### Step 3: Build result
+
+```python
+inter = []
+for x in ans:
+    inter += [x] * ans[x]
+```
+
+---
+
+### Step 4: Sort and output
+
+```python
+inter = sorted(inter)
+print(len(inter))
+print(*inter)
+```
+
+---
+
+## 🔹 Time Complexity Analysis
+
+Let:
+
+```
+n = len(nums1)
+m = len(nums2)
+k = size of intersection (with multiplicity)
+```
+
+### 1. Frequency counting
+
+```
+O(n + m)
+```
+
+### 2. Intersection computation
+
+```
+O(n)   (worst case: all keys unique)
+```
+
+### 3. Building result list
+
+```
+O(k)
+```
+
+### 4. Sorting result
+
+```
+O(k log k)
+```
+
+---
+
+## 🔹 Final Time Complexity
+
+```
+O(n + m + k log k)
+```
+
+---
+
+## 🔹 Space Complexity
+
+```
+O(n + m + k)
+```
+
+* Dictionaries store frequencies
+* Result list stores output
+
+---
+
+## 🔹 Optimization Insight
+
+Instead of sorting the full list (`k` elements), we can:
+
+```python
+inter = []
+for x in sorted(ans):
+    inter.extend([x] * ans[x])
+```
+
+### Improved Complexity:
+
+```
+O(n + m + u log u + k)
+```
+
+Where:
+
+* `u = number of unique common elements`
+
+---
+
+## 🔹 Pythonic Approach (Counter)
+
+```python
+from collections import Counter
+
+c1 = Counter(nums1)
+c2 = Counter(nums2)
+
+inter = list((c1 & c2).elements())
+
+print(len(inter))
+print(*sorted(inter))
+```
+
+---
+
+## 🔹 Key Takeaways
+
+* Use **dictionary when frequency matters**
+* Use **min(count1, count2)** for multiset intersection
+* Sorting depends on **output size (k)**, not input size
+* Always identify whether problem is:
+
+  * Set-based (unique)
+  * Multiset-based (frequency)
+
+---
+
+## 🔹 Mental Model
+
+```
+Set Intersection → Unique elements
+Multiset Intersection → Frequency-based
+```
+
+---
+
+## 🔹 Common Mistakes
+
+* Using set instead of dictionary
+* Forgetting multiplicity
+* Wrong complexity: writing log(n) instead of n log n
+* Ignoring output size in sorting
+
+---
+
+## ✅ Final Insight
+
+In problems involving frequency:
+
+👉 Always think:
+
+```
+"Do I need count or just presence?"
+```
+
+That determines:
+
+* `set` vs `dict`
