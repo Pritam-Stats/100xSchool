@@ -9,21 +9,22 @@ def main():
     n, target = map(int, input().split())
     nums = list(map(int, input().split())) if n>0 else [] 
 
-    ps = [0]*n
-    cs = 0
-    for i in range(n):
-        cs += nums[i]
-        ps[i] = cs
+    p = set()
 
-    #two sum on ps
-    seen = set()
-    for x in ps:
-        comp = target - x
-        if comp in ps:
+    pre = 0
+    for x in nums:
+        pre += x
+        if pre == target:
             print("YES")
             return
-        seen.add(x)
+        comp = pre - target
+        if comp in p:
+            print("YES")
+            return
+        p.add(pre)
     print("NO")
+
+
     
 
 
