@@ -243,7 +243,7 @@ This is **core DSA + backend foundation**.
 ---
 
 # 📘 Intersection of Two Arrays II — Notes
-
+<p align="right">March 24, 2026</p>
 ---
 
 ## 🔹 Problem Summary
@@ -451,3 +451,147 @@ In problems involving frequency:
 That determines:
 
 * `set` vs `dict`
+
+
+---
+
+# Two sums I II III 
+<span style="background-color: black; color: white; padding: 10px; border-radius: 5px; float: right; margin-right: 5px">March 25, 2026</span>
+
+
+## 1. Core Concept
+
+Reduce pair condition:
+
+A[i] + A[j] = X  →  A[j] = X - A[i]
+
+Use a hash map / set to store seen elements and check complements in O(1).
+
+---
+
+## 2. Variant 1: Return Indices (Two Sum II)
+
+### Idea
+
+* Store value → index
+* For each element, check if complement exists
+
+### Code Pattern
+
+```python
+seen = {}
+for i, x in enumerate(nums):
+    if target - x in seen:
+        return seen[target - x] + 1, i + 1
+    seen[x] = i
+```
+
+### Complexity
+
+* Time: O(n)
+* Space: O(n)
+
+### Key Points
+
+* Check before inserting (avoid self-pair)
+* Use 1-based indexing if required
+
+---
+
+## 3. Variant 2: Check Existence (True / False)
+
+### Idea
+
+* Only need to know if pair exists
+* Use a set instead of dict
+
+### Code Pattern
+
+```python
+seen = set()
+for x in nums:
+    if target - x in seen:
+        return True
+    seen.add(x)
+return False
+```
+
+### Complexity
+
+* Time: O(n)
+* Space: O(n)
+
+### Key Points
+
+* No need to store index
+* Early exit improves performance
+
+---
+
+## 4. Variant 3: Count Number of Pairs
+
+### Idea
+
+* Use frequency map
+* Count how many complements already seen
+
+### Code Pattern
+
+```python
+freq = {}
+count = 0
+for x in nums:
+    if target - x in freq:
+        count += freq[target - x]
+    freq[x] = freq.get(x, 0) + 1
+return count
+```
+
+### Complexity
+
+* Time: O(n)
+* Space: O(n)
+
+### Key Points
+
+* Each pair counted once
+* Works with duplicates
+
+---
+
+## 5. Common Pitfalls
+
+* ❌ Insert before checking → self-pair bug
+* ❌ Using dict when set is enough
+* ❌ Forgetting duplicates in counting version
+
+---
+
+## 6. Alternative Approach
+
+### Sorting + Two Pointers
+
+* Time: O(n log n)
+* Space: O(1)
+* Cannot preserve original indices easily
+
+---
+
+## 7. Pattern Recognition
+
+This pattern extends to:
+
+* 3-sum / k-sum
+* Subarray sum = k (prefix sum + hashmap)
+* Difference / complement problems
+
+---
+
+## 8. Mental Model (Feynman)
+
+Walk through array and keep memory of seen numbers.
+
+At each step:
+"Have I already seen the number needed to complete this pair?"
+
+If yes → solution found.
