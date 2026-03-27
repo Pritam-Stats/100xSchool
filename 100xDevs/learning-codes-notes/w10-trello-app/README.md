@@ -227,3 +227,17 @@ This structure builds your understanding of:
 ### 24th March
 
 - Added Frontend custom canvas 
+
+
+### 27th March
+
+- Added signup signin endpoint
+- middleware auth
+- Authenticated endpoints
+  - create org
+  - add member to org
+  - get org details by query params
+  - tested - working.
+  <div style="text-align: center; margin: 10px; border: 0.5px solid black; padding: 7.75px">
+    <img src="27th.png" alt="image" width="500">
+</div>

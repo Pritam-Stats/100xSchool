@@ -6,10 +6,12 @@ require("dotenv").config()
 
 const jwt_secret = process.env.JWT_SECRET;
 
-let USER_ID = 3;
-let ORGANIZATION_ID = 3;
-let BOARD_ID = 3;
-let ISSUE_ID = 3;
+const { authMiddleWareVerify } = require("./middleware")
+
+let USER_ID = 2;
+let ORGANIZATION_ID = 2;
+let BOARD_ID = 2;
+let ISSUE_ID = 2;
 
 const USERS = [{
     id: 1,
@@ -26,13 +28,13 @@ const ORGANIZATIONS = [{
     title: "100xdevs",
     description: "Learning coding platform",
     admin: 1,   //id
-    members: [2]    //in terms of ids, who will get the access
+    members: new Set()    //in terms of ids, who will get the access
 }, {
     id: 2,
     title: "pritam's org",
     description: "Experimenting",
     admin: 1,
-    members: []
+    members: new Set()
 }];
 
 const BOARDS = [
@@ -86,13 +88,14 @@ app.post("/signup", (req, res) => {
     if (userExists) {
         return res.status(400).json({ error: "Username already exists" });
     }
-    
-    const newUser = { id: USERS.length + 1, name, username, password };
+    USER_ID++
+    const newUser = { id: USER_ID, name, username, password };
     USERS.push(newUser);
     
-    res.status(201).send({
+    res.status(201).json({
         message: "User created successfully",
-        user: newUser.username
+        user: newUser.username,
+        userID: newUser.id
     });
 });
 
@@ -134,9 +137,143 @@ app.post("/users", (req, res) => {
 
 });
 
-app.post("/organizations", (req, res) => {
+//authenticated endpoint -- so we need a middleware to verify the token
+app.post("/organizations", authMiddleWareVerify, (req, res) => {
+    //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InByaXRhbTEyMyIsImlkIjozLCJqdGkiOiJjYTEzNWU1Ny0wNTEyLTQ4ODYtYjA1NS1hYjc5MDkyMDdhMDMiLCJpYXQiOjE3NzQ2MDYxMjksImV4cCI6MTc3NDYxMzMyOX0.WAFkheYnw3IsD8iMBGtVxnu94j7W5okLzp8XXYFnWxE
+
+    const userid = req.userid;
+    ORGANIZATIONS.push({
+        id: ORGANIZATION_ID++,
+        title: req.body.title,
+        description: req.body.description,
+        admin: userid,
+        members: new Set()
+    });
+
+    res.json({
+        message: "org added",
+        id: ORGANIZATION_ID - 1
+    })
 
 });
+
+
+app.post("/add-member-to-org", authMiddleWareVerify, (req, res) => {
+    const userid = req.userid;
+    const orgid = req.body.organizationId;
+    const newUser = req.body.newusername;
+
+    const org = ORGANIZATIONS.find(org => org.id === orgid);
+
+    if (!org) {
+        res.status(400).json({
+            message: "Organization not found"
+        })
+        return
+    }
+
+    if (org.admin !== userid) {
+        res.status(411).json({
+            message: "you are not an admin of this org"
+        })
+        return
+    }
+
+    const memberUser = USERS.find(u => u.username === newUser);
+
+    if (!memberUser) {
+        return res.status(411).json({
+            message: "No user with this username found"
+        })
+    };
+
+    //check if the user already a member
+    if (org.members.has(memberUser.id)){
+        return res.status(403).json({
+            message: "user already in the member"
+        })
+    }
+
+    org.members.add(memberUser.id);
+
+    res.json({
+        message: "new member added"
+    })
+
+})
+
+
+app.delete("/members", authMiddleWareVerify, (req, res) => {
+    const userid = req.userid;
+    const orgid = req.body.organizationId;
+    const newUser = req.body.newusername;
+
+    const org = ORGANIZATIONS.find(org => org.id === orgid);
+
+    if (!org) {
+        res.status(400).json({
+            message: "Organization not found"
+        })
+        return
+    }
+
+    if (ORGANIZATIONS.admin !== userid) {
+        res.status(411).json({
+            message: "you are not an admin of this org"
+        })
+        return
+    }
+
+    const memberUser = USERS.find(u => u.username === newUser);
+
+    if (!memberUser) {
+        return res.status(411).json({
+            message: "No user with this username found"
+        })
+    };
+
+    //check if the user already a member
+    if (!ORGANIZATIONS.members.has(memberUser.id)) {
+        return res.status(403).json({
+            message: "user not in the members list"
+        })
+    }
+
+    ORGANIZATIONS.members.delete(memberUser.id)
+    res.json({
+        message: "user removed"
+    })
+
+})
+
+
+app.get("/organizations", authMiddleWareVerify, (req, res) => {
+    const userid = req.userid;
+    const orgid = parseInt(req.query.organizationId);
+
+    const org = ORGANIZATIONS.find(org => org.id === orgid);
+
+    if (!org || org.admin !== userid){
+        res.status(403).json({
+            message: "Org doesn't exist or you are not the admin"
+        })
+        return
+    };
+
+    res.json({
+        org: {
+            ...org,
+            members: [...org.members].map(memberID => {
+                const user = USERS.find(user => user.id === memberID);
+                return user 
+                ? { id: user.id, username: user.username }
+                : null;
+            })
+        }
+    })
+
+})
+
 
 app.post("/boards", (req, res) => {
 
@@ -168,9 +305,6 @@ app.put("/issues", (req, res) => {
 
 })
 
-app.delete("/members", (req, res) => {
-
-})
 
 
 //structure routes, so first thing to design the routes

@@ -2,3 +2,4 @@ frontend
 .vscode
 .env/
 node_modules/
+.env
