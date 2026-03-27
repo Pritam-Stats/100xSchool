@@ -1,6 +1,11 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 
+const { randomUUID } = require("crypto");
+require("dotenv").config()
+
+const jwt_secret = process.env.JWT_SECRET;
+
 let USER_ID = 3;
 let ORGANIZATION_ID = 3;
 let BOARD_ID = 3;
@@ -70,21 +75,27 @@ app.get("/", (req, res) => {
 //create endpoints for users
 app.use(express.json());    //imp middlewares to read json 
 app.post("/signup", (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    // const name = req.body.name;
+    // const username = req.body.username;
+    // const password = req.body.password;
+
+    const {name, username, password} = req.body;
 
     const userExists = USERS.find((user) => user.username === username);
+    
     if (userExists) {
         return res.status(400).json({ error: "Username already exists" });
     }
     
-    const newUser = { id: USERS.length + 1, username, password };
+    const newUser = { id: USERS.length + 1, name, username, password };
     USERS.push(newUser);
+    
     res.status(201).send({
         message: "User created successfully",
         user: newUser.username
     });
 });
+
 
 app.post("/login", (req, res) => {
     const username = req.body.username;
@@ -92,15 +103,29 @@ app.post("/login", (req, res) => {
 
     const userExists = USERS.find((user) => user.username === username);
     if (!userExists) {
-        return res.status(400).json({ error: "User not found" });
+        return res.status(400).json({ error: "User not found!! Signup first" });
     }
 
     if (userExists.password !== password) {
-        return res.status(400).json({ error: "Invalid password" });
+        return res.status(400).json({ error: "Wrong password" });
     }
 
-    const token = jwt.sign({ userId: userExists.id }, "secretcode");
-    res.status(200).json({ token });
+    const token = jwt.sign(
+        {
+            username: username,
+            id: userExists.id,
+            jti: randomUUID(),
+        },
+        jwt_secret,
+        {
+            expiresIn: "2h"
+        }
+    );
+    res.status(200).json({ 
+        token : token,
+        name: userExists.name,
+        message: "Welcome Back "
+     });
 });
 
 
@@ -120,3 +145,32 @@ app.post("/boards", (req, res) => {
 app.post("/issues", (req, res) => {
 
 });
+
+
+//get endpoints
+app.get("/boards", (req, res) => {
+
+});
+
+
+app.get("/issues", (req, res) => {
+
+})
+
+
+app.get("/members", (req, res) => {
+
+})
+
+
+//update
+app.put("/issues", (req, res) => {
+
+})
+
+app.delete("/members", (req, res) => {
+
+})
+
+
+//structure routes, so first thing to design the routes
