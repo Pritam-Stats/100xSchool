@@ -2,20 +2,24 @@ const express = require("express");
 
 const app = express()
 require("dotenv").config();
+const bcrypt = require("bcrypt")
+
+const { todoModel, userModel } = require("./models")
+
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const { authMiddleware } = require("./middleware")
 app.use(express.json())
-let USERS = []
-let TODOS = []
-let currUserId = 1
-let currTodoId = 1
+
 //endpoints
 
-app.post("/signup", (req, res) => {
+app.post("/signup", async (req, res) => {
     const { name, username, password } = req.body;
-    const existingUser = USERS.find(u => u.username === username);
+    // const existingUser = USERS.find(u => u.username === username);
+    const existingUser = await userModel.findOne({
+        username: username,
+    })    //returns a promise
 
     if (existingUser){
         return res.status(409).json({
@@ -23,38 +27,67 @@ app.post("/signup", (req, res) => {
         })
     }
 
-    USERS.push({name, username, password, id: currUserId})
-    currUserId ++;
+    
+    const hashedPass = await bcrypt.hash(password.toString(), 10)
+    // USERS.push({name, username, password, id: currUserId})
+
+    const newUser = await userModel.create({
+        name: name,
+        username: username,
+        password: hashedPass
+    })
+
 
     res.status(201).json({
-        message: "Account Created. You can login now"
+        message: `Account Created ${name}. You can login now`,
+        id: newUser._id
     })
 })
 
 
-app.post("/signin", (req, res) => {
+app.post("/signin", async (req, res) => {
 
-    const { username, password } = req.body;
-    const user = USERS.find(u => u.username === username)
-
-    if (!user || user.password !== password) {
-        return res.status(401).json({
-            message: "Invalid Credentials"
+    try {
+        const { username, password } = req.body;
+        // const user = USERS.find(u => u.username === username)
+        const user = await userModel.findOne({
+            username: username
         })
-    };
 
-    const token = jwt.sign(
-        { userId: user.id },
-        JWT_SECRET,
-        { expiresIn: "2h" }
-    )
-
-    res.status(200).json(
-        {
-            message: `Welcome Back ${user.name}`,
-            token : token
+        if (!user) {
+            return res.status(401).json({
+                message: "Invalid Credentials"
+            })
         }
-    )
+
+        const passVerified = await bcrypt.compare(password.toString(), user.password)
+
+        if (!passVerified) {
+            return res.status(401).json({
+                message: "Invalid Credentials"
+            })
+        };
+
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                username: user.username
+            },
+            JWT_SECRET,
+            { expiresIn: "2h" }
+        )
+
+        res.status(200).json(
+            {
+                message: `Welcome Back ${user.name}`,
+                token: token
+            }
+        )
+    } catch (err) {
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
 
 })
 
