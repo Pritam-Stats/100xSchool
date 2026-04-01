@@ -9,7 +9,27 @@ def main():
     n, k = map(int, input().split())
     nums = list(map(int, input().split())) if n>0 else [] 
     # write solution here 
+    maxSum = 0
+    currSum = 0
+    '''
+    #prefix-sum
     
+    p = [0]*n
+    for i in range(n):
+        currSum += nums[i]
+        p[i] = currSum
+
+    #first k
+    maxSum = p[k-1]
+
+    for i in range(n-k+1):
+        currSum = p[i+k-1] if i==0 else p[i+k-1] - p[i-1]
+        maxSum = max(maxSum, currSum)
+
+    print(maxSum)
+    return
+    '''
+
     #typical sliding window problem
     # first window
     currSum = sum(nums[:k])
