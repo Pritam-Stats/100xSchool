@@ -79,7 +79,7 @@ app.post("/createnotes", authMiddleware, (req, res) => {
 app.get("/getnotes", authMiddleware, (req, res) => {
 
     const username = req.username;
-    
+    c
     //filter the note according to the user
     const usernotes = NOTES.filter((note) => note.username === username)
     if (usernotes.length === 0) {
