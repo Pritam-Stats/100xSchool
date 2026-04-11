@@ -30,3 +30,5 @@
     Solutions
   </span>
 </div>
+
+[Class Note](https://drive.google.com/file/d/1Eyt5mMXpIX02vtHI0vIOJHKh2ZO-Dc7O/view?usp=drive_link)
