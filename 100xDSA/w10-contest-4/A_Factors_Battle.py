@@ -29,7 +29,8 @@ def solve():
     t = 1
     # t = int(input())
     for _ in range(t):
-       main()
+        main()
 
 if __name__ == "__main__":
     solve()
+
