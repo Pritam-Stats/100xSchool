@@ -237,4 +237,3 @@ Summary
 	•	Always operate on sorted arrays
 	•	Frequency = right - left
 	•	Clean and safer than manual binary search for bounds
-
