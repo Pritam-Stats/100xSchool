@@ -23,8 +23,10 @@ def print_fast(*args):
 
 # 1. The Bootstrap Decorator
 
+
 from types import GeneratorType
-def bootstrap(f, stack=[]):
+def bootstrap(f, stack=None):
+    if stack is None: stack = []
     def func_wrapper(*args, **kwargs):
         if stack:
             return f(*args, **kwargs)
