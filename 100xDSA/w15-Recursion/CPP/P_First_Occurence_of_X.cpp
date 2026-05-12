@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-//#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 using namespace std;
 
 // ---------- Macros & Typedefs ----------
@@ -17,24 +17,30 @@ using namespace std;
 
 // ---------- Solve Function ----------
 
-int f(int a[], int n, int i, int x){
-    if (i == n) return -1;
+int f(int a[], int n, int x)
+{
+    if (n == 0)
+        return -1;
 
-    
-    int smallAns = f(a, n, i+1, x);
-    // if (smallAns != -1) return smallAns;
-    if (a[i] == x) {
-        smallAns = i+1;
+    int smallAns = f(a, n - 1, x); // ask the person in front of you first
+    if (smallAns != -1)
+        return smallAns;
+
+    if (a[n - 1] == x)
+    {
+        return n;
     }
 
+    return -1;
 }
 
-
-void solve() {
+void solve()
+{
     int n;
     cin >> n;
     int a[n];
-    for (int i = 0; i<n; i++){
+    for (int i = 0; i < n; i++)
+    {
         cin >> a[i];
     }
     int x;
@@ -44,9 +50,9 @@ void solve() {
     cout << ans;
 }
 
-
 // ---------- Main ----------
-int main() {
+int main()
+{
     // Fast I/O
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
@@ -54,7 +60,8 @@ int main() {
     int t = 1;
     // cin >> t;
 
-    while (t--) {
+    while (t--)
+    {
         solve();
     }
 
